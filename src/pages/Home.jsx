@@ -12,6 +12,7 @@ import {
 } from "recharts";
 
 function Home() {
+    const BASE_URL = "https://smart-meter-backend-7srm.onrender.com"
     const suggestionsFromAnomalies = (anomalyList) => {
         const suggestions = [];
         if (anomalyList.includes("no_current")) {
@@ -59,18 +60,18 @@ function Home() {
     const recentStats = chartData.slice(-30);
 
     useEffect(() => {
-        fetch("http://localhost:5000/api/history")
+        fetch(`${BASE_URL}/api/history`)
             .then(res => res.json())
             .then(data => setChartData(data))
             .catch(err => console.error("History fetch failed", err));
 
-        fetch("http://localhost:5000/api/auto-insights")
+        fetch(`${BASE_URL}/api/auto-insights`)
             .then(res => res.json())
             .then(data => setAutoInsights(data))
             .catch(err => console.error("Insights fetch failed", err));
 
         const interval = setInterval(() => {
-            fetch("http://localhost:5000/api/live")
+            fetch(`${BASE_URL}/api/live`)
                 .then(res => res.json())
                 .then(newPoint => {
                     setChartData(prev => [...prev.slice(-99), newPoint]);
@@ -133,7 +134,7 @@ function Home() {
     };
 
     const simulateAnomaly = (type) => {
-        fetch(`http://localhost:5000/api/live?anomaly=${type}`)
+        fetch(`${BASE_URL}/api/live?anomaly=${type}`)
             .then(res => res.json())
             .then(newPoint => {
                 setChartData(prev => [...prev.slice(-99), newPoint]);
