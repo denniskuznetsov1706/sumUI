@@ -103,11 +103,13 @@ function Home() {
         };
         try {
             setLoading(true);
-            const res = await fetch("https://adyasmart.app.n8n.cloud/webhook/28cd80ba-0e23-4720-b2bc-adeb727bae4c", {
+
+            const res = await fetch(`${BASE_URL}/api/ask-bot`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload)
             });
+
             const data = await res.json();
             const reply = data.reply || "🤖 No reply received.";
             setChatHistory(prev => [...prev, { sender: "User", msg: question }, { sender: "Bot", msg: reply }]);
